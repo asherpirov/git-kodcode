@@ -65,7 +65,20 @@ print(second_largest_num([4, 1, 7, 7, 6, 5]))
 
 #q7
 def merge_lists(lst1, lst2):
-    lst3 = sorted(lst1 + lst2)
+    lst3 = []
+    i = 0
+    j = 0
+    while i < len(lst1) and j < len(lst2):
+        if lst1[i] <= lst2[j]:
+            lst3.append(lst1[i])
+            i += 1
+        else:
+            lst3.append(lst2[j])
+            j += 1
+
+    lst3.extend(lst1[i:])
+    lst3.extend(lst2[j:])
+
     return lst3
 
 print(merge_lists([1,3,5], [2,4,6]))
