@@ -83,7 +83,23 @@ def list_tasks(filename):
             status_icon = "[]"
         print(f"{status_icon} {task['id']}|{task['desc']}")
 
-list_tasks("tasks.txt")
+def remove_tasks(filename, task_id):
+    tasks = load_tasks(filename)
+
+    for task in tasks:
+        if task["id"] == task_id:
+            tasks.remove(task)
+            print(f"The task {task_id} removed")
+            break
+    with open(filename, "w", encoding="utf-8") as f:
+        for task in tasks:
+            task_id = task["id"]
+            status = task["status"]
+            desc = task["desc"]
+
+            line = f"{task_id}|{status}|{desc}\n"
+            f.write(line)
+
 
 def main():
     FILENAME = "tasks.txt"
@@ -92,7 +108,8 @@ def main():
         print('1. הצג משימות')
         print('2. הוסף משימה')
         print('3. סמן כהושלם')
-        print('4. יציאה')
+        print("4. מחק משימה")
+        print('5. יציאה')
         choice = input('בחירה: ')
 
         if choice == '1':
@@ -104,7 +121,10 @@ def main():
         elif choice == '3':
             task_id = int(input('מספר משימה: '))
             complete_task(FILENAME, task_id)
-        elif choice == '4':
+        elif choice == "4":
+            task_id = int(input('מספר משימה: '))
+            remove_tasks(FILENAME, task_id)
+        elif choice == '5':
             print('להתראות!')
             break
         else:
