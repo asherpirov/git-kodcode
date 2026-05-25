@@ -99,6 +99,12 @@ def remove_tasks(filename, task_id):
             line = f"{task_id}|{status}|{desc}\n"
             f.write(line)
 
+def filter_by_status(filename, status):
+    tasks = load_tasks(filename)
+    for task in tasks:
+        if task["status"] == status:
+            print(f"{task["id"]} | {task["status"]} | {task["desc"]}")
+
 
 def main():
     FILENAME = "tasks.txt"
@@ -108,7 +114,8 @@ def main():
         print('2. הוסף משימה')
         print('3. סמן כהושלם')
         print("4. מחק משימה")
-        print('5. יציאה')
+        print("5. סינון לפי סטטוס")
+        print('6. יציאה')
         choice = input('בחירה: ')
 
         if choice == '1':
@@ -123,7 +130,10 @@ def main():
         elif choice == "4":
             task_id = int(input('מספר משימה: '))
             remove_tasks(FILENAME, task_id)
-        elif choice == '5':
+        elif choice == "5":
+            status = input('סטטוס:  ')
+            filter_by_status(FILENAME, status)
+        elif choice == '6':
             print('להתראות!')
             break
         else:
