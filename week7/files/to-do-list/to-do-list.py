@@ -41,13 +41,12 @@ def add_task(filename, description):
     - status = 'PENDING'
     הפרמטר שניתן = description -
     """
-    with open(filename, "r+", encoding="utf-8") as f:
-        try:
-            nums_lines = len(f.readlines())
-            line = f"{nums_lines + 1}|{"PENDING"}|{description}\n"
-            f.write(line)
-        except FileNotFoundError:
-            print(f"file {filename} not found.")
+    tasks = load_tasks(filename)
+    last_task = tasks[-1]
+    new_id = last_task["id"] + 1
+    with open(filename, "a", encoding="utf-8") as f:
+        f.write(f"{new_id}|PENDING|{description}\n")
+
 
 def complete_task(filename, task_id):
     """

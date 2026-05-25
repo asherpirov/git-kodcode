@@ -1,4 +1,5 @@
-2|DONE|לכתוב תרגיל 1
+1|PENDING|ללמוד Python Files
 3|PENDING|לסיים את הפרויקט
 4|DONE|לסיים את כל הבונוס
 5|DONE|לבדוק את התפריט
+6|PENDING|בדיקה
