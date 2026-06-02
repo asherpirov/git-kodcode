@@ -1,0 +1,36 @@
+2026-05-25 17:39:34,977 | INFO | payments | Starting payment process for 150 shekels
+2026-05-25 17:39:34,978 | INFO | payments | Payment process completed successfully.
+2026-05-25 17:39:34,978 | INFO | payments | Starting payment process for -50 shekels
+2026-05-25 17:39:34,978 | ERROR | payments | ERROR: Invalid amount
+2026-05-25 17:39:35,027 | INFO | payments | successful file open
+2026-05-25 17:39:35,027 | INFO | payments | done
+2026-05-25 17:39:35,027 | ERROR | payments | failed
+2026-05-25 17:39:35,027 | INFO | users | register user to the system
+2026-05-25 17:39:35,027 | INFO | users | ok email=asherpirov@gmail.com password=True
+2026-05-25 17:39:35,027 | INFO | users | Login completed.
+2026-05-26 08:48:59,442 | INFO | payments | Starting payment process for 150 shekels
+2026-05-26 08:48:59,443 | INFO | payments | Payment process completed successfully.
+2026-05-26 08:48:59,443 | INFO | payments | Starting payment process for -50 shekels
+2026-05-26 08:48:59,444 | ERROR | payments | ERROR: Invalid amount
+2026-05-26 08:48:59,466 | INFO | payments | successful file open
+2026-05-26 08:48:59,467 | INFO | payments | done
+2026-05-26 08:48:59,467 | ERROR | payments | failed
+2026-05-26 08:48:59,467 | INFO | users | User registration started
+2026-05-26 08:48:59,468 | INFO | users | ok email=asherpirov@gmail.com password=True
+2026-05-26 08:48:59,468 | INFO | users | Login completed.
+2026-05-26 14:55:30,227 | INFO | payments | Starting payment process for 150 shekels
+2026-05-26 14:55:30,229 | INFO | payments | Payment process completed successfully.
+2026-05-26 14:55:30,229 | INFO | payments | Starting payment process for -50 shekels
+2026-05-26 14:55:30,229 | ERROR | payments | ERROR: Invalid amount
+2026-05-26 14:55:30,244 | INFO | payments | successful file open
+2026-05-26 14:55:30,245 | INFO | payments | done
+2026-05-26 14:55:30,245 | ERROR | payments | failed
+2026-05-26 14:55:30,245 | INFO | users | User registration started
+2026-05-26 14:55:30,245 | INFO | users | ok email=asherpirov@gmail.com password=True
+2026-05-26 14:55:30,245 | INFO | users | Login completed.
+2026-05-26 15:49:15,824 - apps.log - INFO - User 'Asher Pirov' is trying to log in.
+2026-05-26 15:49:15,825 - apps.log - WARNING - Login successful for 'Asher Pirov'.
+2026-05-26 15:50:38,936 - __main__ - INFO - The system is starting up...
+2026-05-26 15:50:38,937 - apps.log - INFO - User 'david_cohen' is trying to log in.
+2026-05-26 15:50:38,937 - apps.log - WARNING - Login successful for 'david_cohen'.
+2026-05-26 15:50:38,937 - __main__ - INFO - The system finished running successfully.
