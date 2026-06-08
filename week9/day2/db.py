@@ -22,7 +22,7 @@ def get_all() -> list[dict]:
     conn = get_connection()
     cursor = conn.cursor(dictionary= True)
     query = """
-        SELECT * FROM soldiers_db
+        SELECT * FROM soldiers
             """
     cursor.execute(query)
     soldiers = cursor.fetchall()
@@ -34,7 +34,7 @@ def get_by_id(soldier_id: int) -> dict | None:
     conn = get_connection()
     cursor = conn.cursor(dictionary= True)
     query = """
-            SELECT FROM soldiers_db WHERE id == %s
+            SELECT * FROM soldiers WHERE id=%s
             """
     cursor.execute(query, (soldier_id,))
     soldier = cursor.fetchall()
@@ -42,14 +42,15 @@ def get_by_id(soldier_id: int) -> dict | None:
     cursor.close()
     return soldier
 
-def create(name, rank, unit) -> int:
+def create(name, rank, unit):
     conn = get_connection()
     cursor = conn.cursor()
     query = """
-               INSERT INTO soldiers_db (name, rank_, unit) VALUES (%s, %s, %s)
+               INSERT INTO soldiers (name, rank_, unit) VALUES (%s, %s, %s)
             """
     cursor.execute(query,(name, rank, unit))
-    new_id = cursor.lastrowid()
+    new_id = cursor.lastrowid
+    conn.commit()
     conn.close()
     cursor.close()
     return new_id
@@ -58,10 +59,11 @@ def update(soldier_id, data: dict) -> bool:
     conn = get_connection()
     cursor = conn.cursor()
     query = """
-                UPDATE soldiers_db SET rank_=%s WHERE id=%s
+                UPDATE soldiers SET rank_=%s WHERE id=%s
             """
     cursor.execute(query, (data["rank"], soldier_id))
     has_update = cursor.rowcount > 0
+    conn.commit()
     conn.close()
     cursor.close()
     return has_update
@@ -70,11 +72,11 @@ def delete(soldier_id: int) -> bool:
     conn = get_connection()
     cursor = conn.cursor()
     query = """
-               DELETE FROM soldiers_db WHERE id=%s
+               DELETE FROM soldiers WHERE id=%s
             """
     cursor.execute(query, (soldier_id,))
     has_deleted = cursor.rowcount > 0
+    conn.commit()
     conn.close()
     cursor.close()
     return has_deleted
-
