@@ -61,7 +61,7 @@ def update(soldier_id, data: dict) -> bool:
     query = """
                 UPDATE soldiers SET rank_=%s WHERE id=%s
             """
-    cursor.execute(query, (data["rank"], soldier_id))
+    cursor.execute(query, ((data["rank"]), soldier_id))
     has_update = cursor.rowcount > 0
     conn.commit()
     conn.close()

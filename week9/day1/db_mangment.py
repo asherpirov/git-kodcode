@@ -1,7 +1,7 @@
 import mysql.connector
 import time
 
-PORT = 3307
+PORT = 3306
 USER = "root"
 PASSWORD = "secret"
 HOST = "localhost"
@@ -10,13 +10,12 @@ DB = "soldiers_db"
 
 
 def get_connection():
-    time.sleep(2)
     return mysql.connector.connect(host="127.0.0.1",
                                    user="root",
                                    password="secret",
                                    port=3306,
                                    database="soldiers_db")
-get_connection()
+
 def setup():
     conn = get_connection()
     cursor = conn.cursor()
@@ -38,7 +37,7 @@ def setup():
 
 def get_schema():
     conn = get_connection()
-    cursor = conn.corsur()
+    cursor = conn.cursor()
     query = """ 
         DESCRIBE soldiers 
             """
@@ -52,7 +51,7 @@ def get_soldiers():
     conn = get_connection()
     cursor = conn.cursor()
     query = """
-        SELECT * FROM soldiers_db
+        SELECT * FROM soldiers
             """
     cursor.execute(query)
     rows = cursor.fetchall()
