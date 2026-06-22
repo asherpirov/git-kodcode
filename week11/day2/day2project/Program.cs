@@ -70,21 +70,20 @@ class Fleet
 
     static string CategorySpeed(int speed)
     {
-        string category = "slow";
 
         if (speed <= 100)
         {
-            category = "slow";
+            return "slow";
         }
-        else if (100 < speed && speed <= 300)
+        else if (speed < 300)
         {
-            category = "medium";
+            return  "medium";
         }
         else
         {
-            category = "fast";
+            return  "fast";
         }
-        return category;
+       
     }
     
 
@@ -121,39 +120,39 @@ class Fleet
     }
 
 
-    static string GetValidStatus()
-    {
-        string status = "";
-        string[] allowedStatuses =  { "cruising", "turning", "stopped", "accelerating" };
+    //static string GetValidStatus()
+    //{
+    //    string status = "";
+    //    string[] allowedStatuses =  { "cruising", "turning", "stopped", "accelerating" };
 
-        bool validStatus = false;
+    //    bool validStatus = false;
 
-        while (!validStatus)
-        {
-            Console.WriteLine("Please enter the status (cruising, turning, stopped, accelerating): ");
-            string statusInput = Console.ReadLine();
+    //    while (!validStatus)
+    //    {
+    //        Console.WriteLine("Please enter the status (cruising, turning, stopped, accelerating): ");
+    //        string statusInput = Console.ReadLine();
     
 
-            foreach (string allowedStatus in allowedStatuses)
-            {
-                if (statusInput == allowedStatus)
+    //        foreach (string allowedStatus in allowedStatuses)
+    //        {
+    //            if (statusInput == allowedStatus)
 
-                {
-                    status = statusInput;
-                    validStatus = true;
-                    break;
-                }
+    //            {
+    //                status = statusInput;
+    //                validStatus = true;
+    //                break;
+    //            }
                 
                 
-            }
+    //        }
 
-        }
-        if (!validStatus)
-        {
-            Console.WriteLine("Error: Please enter one of the exact status words.");
-        }
-        return status;
-    }
+    //    }
+    //    if (!validStatus)
+    //    {
+    //        Console.WriteLine("Error: Please enter one of the exact status words.");
+    //    }
+    //    return status;
+    //}
 
     static void AddTrack(List<int> tracks, List<double> speeds, List<int> headings, int id, double speed, int heading)
     {
@@ -187,7 +186,7 @@ class Fleet
 
         if (i >= 0)
         {
-            result = $"The track {id}, the speed: {speeds[i]} kn, the heading: {headings[i]} ";
+            result = $"[trackId: {tracks[i]}, speed: {speeds[i]} kn, heading: {headings[i]}]";
         }
         else
         {
@@ -200,28 +199,29 @@ class Fleet
 
     static string ListAllTrack(List<int> tracks, List<double> speeds, List<int> headings)
     {
-        string allLists = "";
-        for (int i = 0; i < tracks.Count; i++)
-        {
-            allLists += $"[trackId: {tracks[i]}, speed: {speeds[i]}, heading: {headings[i]}]\n";
-        }
-
         if (tracks.Count == 0)
         {
             return "The fleet is currently empty.";
+        }
+
+
+        string allLists = "";
+        for (int i = 0; i < tracks.Count; i++)
+        {
+            allLists += $"[trackId: {tracks[i]}, speed: {speeds[i]} kn, heading: {headings[i]}]\n";
         }
 
         return allLists;
 
     }
     
-    static List<int> FilterBySpeed(List<int> tracks, List<double> speeds, List<int> headings, double speed)
+    static List<int> FilterBySpeed(List<int> tracks, List<double> speeds, double threshold)
     {
         List<int> fastTrack = new List<int>();
 
         for (int i = 0; i< tracks.Count; i++)
         {
-            if (speeds[i] > speed)
+            if (speeds[i] > threshold)
             {
                 fastTrack.Add(tracks[i]);
             }
@@ -230,34 +230,103 @@ class Fleet
     return fastTrack;
     }
 
+    static double CalculateAverage(List<double> speeds)
+    {
+        if (speeds.Count == 0)
+        {
+            return 0.0;
+        }
+
+        double sum = 0;
+
+        foreach (double s in speeds)
+        {
+            sum += s;
+        }
+        return sum / speeds.Count;
+    }
+
+    static string Summarize(List<int> tracks, List<double> speeds)
+    {
+        double avgSpeed = CalculateAverage(speeds);
+        List<int> fastestTracks = FilterBySpeed(tracks, speeds, 300);
+        string fastTracksText = string.Join(",", fastestTracks);
+
+        string fleet = $"Track count:{tracks.Count}\nAverage speed: {avgSpeed} kn\nFastest tracks (over 300 km/h): [TrackId: {fastTracksText}])";
+
+        return fleet;
+    }
+
+
 
     static void Main()
     {
         List<int> tracks = new List<int>();
         List<double> speeds = new List<double>();
         List<int> headings = new List<int>();
-        List<int> result = FilterBySpeed(tracks, speeds, headings, 100.4);
 
 
-        //int newTrackId = GetValidId();
-        //int newSpeed = GetValidSpeed();
-        //string category = categorySpeed(newSpeed);
-        //int heading = GetValidHeading();
-        //string status = GetValidStatus();
-        AddTrack(tracks, speeds, headings, 1, 100, 150);
-        AddTrack(tracks, speeds, headings, 2, 180, 240);
-        //Console.WriteLine((ListAllTrack(tracks, speeds, headings)));
-        Console.WriteLine(string.Join(", ", result));
-        //RemoveById(tracks, speeds, headings, newTrackId);
-        //Console.WriteLine(findById(tracks, speeds, headings, 1));
+        while (true)
+        {
+            Console.WriteLine("==== Tracks Menu ====");
+            Console.WriteLine("1.Add track");
+            Console.WriteLine("2.Remove track");
+            Console.WriteLine("3.Show all tracks");
+            Console.WriteLine("4.Show fastest tracks");
+            Console.WriteLine("5.Search track by id");
+            Console.WriteLine("6.Show Reports");
+            Console.WriteLine("7.Exit");
+
+            Console.WriteLine("Enter your choice: ");
+            string choice = Console.ReadLine();
 
 
-        //Console.WriteLine("=== Track Report ===");
-        //Console.WriteLine($"The new trackid is: {newTrackId}");
-        //Console.WriteLine($"The new speed is: {newSpeed} km/h ({category})");
-        //Console.WriteLine($"Heading: {heading} degrees");
-        //Console.WriteLine($"The new status is: {status}");
+            if (choice == "1")
+            {
+                int newTrackId = GetValidId();
+                int newSpeed = GetValidSpeed();
+                int heading = GetValidHeading();
+                //string status = GetValidStatus();
+
+                AddTrack(tracks, speeds, headings, newTrackId, newSpeed, heading);
+                Console.WriteLine("Track added successfully!");
+            }
+            else if (choice == "2")
+            {
+                int newTrackId = GetValidId();
+                RemoveById(tracks, speeds, headings, newTrackId);
+            }
+            else if (choice == "3")
+            {
+                Console.WriteLine(ListAllTrack(tracks, speeds, headings));
+            }
+            else if (choice == "4")
+            {
+                List<int> fastTracks = FilterBySpeed(tracks, speeds, 300);
+                Console.WriteLine("Fastest tracks (over 300): " + string.Join(", ", fastTracks));
+            }
+            else if (choice == "5")
+            {
+                int searchId = GetValidId();
+                Console.WriteLine(FindById(tracks, speeds, headings, searchId));
+            }
+            else if (choice == "6")
+            {
+                Console.WriteLine();
+                Console.WriteLine(Summarize(tracks, speeds));
+            }
+            else if (choice == "7")
+            {
+                Console.WriteLine("Exiting program... Goodbye!");
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Error: not valid input, please try again");
+            }
+            
+        }
+      
     }
 
 }
-
