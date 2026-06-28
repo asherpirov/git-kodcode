@@ -72,16 +72,16 @@ class BankAccount
     }
 
     public BankAccount(int accountNumber, string ownerName, double balance, string accountType)
-        {
-            _accountNumber = accountNumber;
-            OwnerName = ownerName;
-            Balance = balance;
-            AccountType = accountType;
+    {
+        _accountNumber = accountNumber;
+        OwnerName = ownerName;
+        Balance = balance;
+        AccountType = accountType;
 
-            IsActive = true;
-            _transactionHistory = new List<string>();
+        IsActive = true;
+        _transactionHistory = new List<string>();
 
-        }
+    }
     public BankAccount(int accountNumber, string ownerName)
         : this(accountNumber, ownerName, 0.0, "Checking") { }
 
@@ -94,17 +94,18 @@ class BankAccount
     public void Deposit(double amount)
 
     {
-        if (IsActive = true)
+        if (!IsActive)
         {
-
+            Console.WriteLine("Error, the account not active.");
+            return;
         }
-        if (amount > 0)
+        if (amount <= 0)
         {
-            Balance += amount;
-            _transactionHistory.Add($"Deposit ${amount:F2}");
-
+            Console.WriteLine("Error: Amount must be positive.");
+            return;
         }
-        else { Console.WriteLine("Error, the amonut must be positive."); }
+    Balance += amount;
+    _transactionHistory.Add($"Deposited ${amount:F2}");
     }
 
     public bool Withdraw(double amount)
@@ -115,7 +116,7 @@ class BankAccount
             return false;
         }
 
-        if (amount < 0)
+        if (amount <= 0)
         {
             Console.WriteLine("Error, the amonut must be positive.");
             return false;
@@ -140,7 +141,7 @@ class BankAccount
             Balance += interest;
             _transactionHistory.Add($"Applied Interest ${interest:F2}");
         }
-       
+
     }
 
     public void PrintTransactionHistory()
@@ -153,18 +154,78 @@ class BankAccount
 
     public static bool Transfer(BankAccount from, BankAccount to, double amount)
     {
-        
-    }
+        if (!to.IsActive)
+        {
+            Console.WriteLine("Error: Destination account is inactive.");
+            return false;
+        }
+        if (from.Withdraw(amount))
+        {
+            to.Deposit(amount);
+            return true;
+        }
 
-class Program
-{
-    public void Main()
-    {
-
+        return false;
     }
 }
 
+class Program
+{
+    public static void Main()
+    {
 
+        List<BankAccount> ListOfBankAccount = new List<BankAccount>();
 
+        ListOfBankAccount.Add(new BankAccount(8801, "Itay Levi", 5500.0, "Savings")); 
+        ListOfBankAccount.Add(new BankAccount(8802, "Noa Cohen")); 
+        ListOfBankAccount.Add(new BankAccount(8803, "  ", -400, "invalid_type"));
+        ListOfBankAccount.Add(new BankAccount(8804, "Asher Pirov", 14000.0, "Business"));
+        ListOfBankAccount.Add(new BankAccount(8805, "Tamar Avraham", 950.0, "Savings"));
 
+        Console.WriteLine("=== All Bank Accounts ===");
+        foreach (BankAccount account in ListOfBankAccount)
+        {
+            Console.WriteLine(account.ToString());
+        }
 
+        Console.WriteLine("\n=== Performing Transactions ===");
+        ListOfBankAccount[0].Deposit(1500);
+        ListOfBankAccount[1].Deposit(3000); 
+        ListOfBankAccount[0].Withdraw(700); 
+        ListOfBankAccount[1].Withdraw(5000);
+
+        Console.WriteLine("\n=== Testing Account Status ===");
+        ListOfBankAccount[4].DeActivate();
+        ListOfBankAccount[4].Deposit(500);
+        ListOfBankAccount[4].Activate();
+
+        Console.WriteLine("\n=== Applying Interest ===");
+        foreach (BankAccount acc in ListOfBankAccount)
+        {
+            acc.ApplyInterest();
+        }
+
+        Console.WriteLine("\n=== Transferring Money ===");
+        Console.WriteLine($"Before: {ListOfBankAccount[3]}");
+        Console.WriteLine($"Before: {ListOfBankAccount[4]}");
+
+        BankAccount.Transfer(ListOfBankAccount[3], ListOfBankAccount[4], 400);
+
+        Console.WriteLine($"After: {ListOfBankAccount[3]}");
+        Console.WriteLine($"After: {ListOfBankAccount[4]}");
+
+        Console.WriteLine("\n=== Printing Transaction History ===");
+        Console.WriteLine("-- History for Itay Levi --");
+        ListOfBankAccount[0].PrintTransactionHistory();
+
+        Console.WriteLine("\n-- History for Noa Cohen --");
+        ListOfBankAccount[1].PrintTransactionHistory();
+
+        Console.WriteLine("\n=== Final Accounts Status ===");
+        foreach (BankAccount acc in ListOfBankAccount)
+        {
+             Console.WriteLine(acc);
+        }
+
+    }
+}
